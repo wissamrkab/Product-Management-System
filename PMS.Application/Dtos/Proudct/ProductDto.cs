@@ -1,6 +1,6 @@
 ﻿using PMS.Application.Common.Mapping;
 using PMS.Application.Dtos.Audit;
-using PMS.Application.Dtos.CategoryDto_s;
+using PMS.Application.Dtos.Category;
 
 namespace PMS.Application.Dtos.Proudct;
 

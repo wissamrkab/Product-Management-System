@@ -1,4 +1,6 @@
-﻿namespace PMS.Domain.Common;
+﻿using Newtonsoft.Json;
+
+namespace PMS.Domain.Common;
 
 public class ExceptionCode
 {
@@ -13,5 +15,13 @@ public class ExceptionCode
     {
         Code = code;
         Description = description;
+    }
+
+    public string ToJsonString()
+    {
+        return JsonConvert.SerializeObject(this, new JsonSerializerSettings()
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        });
     }
 }

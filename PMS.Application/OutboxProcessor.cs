@@ -1,10 +1,10 @@
 ﻿using PMS.Domain.Entities;
-using PMS.Domain.Interfaces;
-using PMS.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using PMS.Application.Interfaces;
+using PMS.Application.Interfaces.Repositories;
 
 namespace PMS.Application;
 

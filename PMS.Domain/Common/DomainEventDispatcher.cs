@@ -1,12 +1,10 @@
 ﻿using PMS.Domain.Common.Interfaces;
-using PMS.Domain.Interfaces;
 using MediatR;
 
 namespace PMS.Domain.Common;
 
 public class DomainEventDispatcher(
-    IPublisher mediator,
-    ILoggingService loggingService
+    IPublisher mediator
     ) : IDomainEventDispatcher
 {
     public async Task DispatchAndClearEvents(IEnumerable<BaseEntity> entitiesWithEvents)
@@ -19,14 +17,7 @@ public class DomainEventDispatcher(
 
             foreach (var domainEvent in events)
             { 
-                try
-                {
-                    await mediator.Publish(domainEvent);
-                }
-                catch (Exception ex)
-                {
-                    loggingService.Error($"Error dispatching domain event: {ex.Message}");
-                }
+                await mediator.Publish(domainEvent);
             }
         }
     }

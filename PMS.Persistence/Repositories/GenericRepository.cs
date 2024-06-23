@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
-using PMS.Domain.Interfaces.Repositories;
 using PMS.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.IdentityModel.Tokens;
+using PMS.Application.Interfaces.Repositories;
 
 namespace PMS.Persistence.Repositories;
 

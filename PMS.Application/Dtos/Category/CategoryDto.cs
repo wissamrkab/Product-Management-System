@@ -1,13 +1,16 @@
-﻿using PMS.Domain.Entities;
-using PMS.Application.Common.Mapping;
+﻿using PMS.Application.Common.Mapping;
 
-namespace PMS.Application.Dtos.CategoryDto_s;
+namespace PMS.Application.Dtos.Category;
 
-public class CategoryDto : IMapFrom<Category>
+public class CategoryDto : IMapFrom<Domain.Entities.Category>
 {
     public Guid Id { get; set; }
-    public string Title { get; set; } = null!;
-    public string Image { get; set; } = null!;
+    public string NameEn { get; set; } = null!;
+    public string NameAr { get; set; } = null!;
     public Guid? ParentId { get; set; }
-    public List<CategoryDto> SubCategories { get; set; } = null!;
+}
+
+public class CategoryWithSubCategoriesDto : CategoryDto
+{
+    public List<CategoryWithSubCategoriesDto> SubCategories { get; set; } = null!;
 }

@@ -1,5 +1,5 @@
-﻿using PMS.Domain.Interfaces;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using PMS.Application.Interfaces;
 using Serilog;
 using Serilog.Core;
 

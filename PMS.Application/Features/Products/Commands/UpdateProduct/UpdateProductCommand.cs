@@ -1,30 +1,33 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using PMS.Domain.Common;
-using PMS.Domain.Exceptions;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using PMS.Application.Common;
 using PMS.Application.Dtos.Proudct;
 using PMS.Application.Interfaces.Repositories;
+using PMS.Domain.Common;
 using PMS.Domain.Entities;
+using PMS.Domain.Exceptions;
 
-namespace PMS.Application.Features.Products.Commands.CreateProduct;
+namespace PMS.Application.Features.Products.Commands.UpdateProduct;
 
-public class CreateProductCommand : BaseRequest,IRequest<Result<ProductDto>>
+public class UpdateProductCommand : BaseRequest,IRequest<Result<ProductDto>>
 {
+    [Required] public Guid Id { get; set; }
     [Required] public string Name { get; set; } = null!;
     [Required] public string Isbn { get; set; } = null!;
     [Required] public decimal Price { get; set; } = 0;
     [Required] public List<Guid> Categories { get; set; } = null!;
 }
 
-internal class CreateProductCommandHandler(
-    IUnitOfWork unitOfWork,
-    IMediator mediator,
-    IMapper mapper)
-    : BaseRequestHandler<CreateProductCommand, Result<ProductDto>>(unitOfWork, mediator, mapper)
+internal class UpdateProductCommandHandler(
+    IUnitOfWork unitOfWork, 
+    IMediator mediator, 
+    IMapper mapper,
+    IProductRepository productRepository)
+    : BaseRequestHandler<UpdateProductCommand, Result<ProductDto>>(unitOfWork, mediator, mapper)
 {
-    public override async Task<Result<ProductDto>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<ProductDto>> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
         try
         {
@@ -43,23 +46,19 @@ internal class CreateProductCommandHandler(
                 return nonExistentCategoryIds;
             }
             
-            var productResult = Product.Create(
-                command.Name,
-                command.Isbn,
-                command.Price,
-                existingCategories,
-                null
-            );
-
-            if (!productResult.IsSuccess || productResult.Data == null) return productResult.ToDtoResult<ProductDto>(Mapper);
+            var product = await productRepository.GetFullProductById(command.Id);
             
-            var product = productResult.Data;
-            product.AddDomainEvent(new ProductCreatedEvent(product));
+            if (product == null) return ProductsExceptions.ProductDoesNotExist;
             
-            await UnitOfWork.Repository<Product>().AddAsync(product);
+            var productResult = product.Update(command.Name, command.Isbn, command.Price, existingCategories, null);
+            
+            if (!productResult.IsSuccess) return productResult.ToDtoResult<ProductDto>(Mapper);
+                
+            UnitOfWork.Repository<Product>().UpdateAsync(product);
+            product.AddDomainEvent(new ProductUpdatedEvent(product));
             await UnitOfWork.CommitAsync(cancellationToken);
-            
-            return productResult.ToDtoResult<ProductDto>(Mapper);
+           
+            return product.ToSuccessResult().ToDtoResult<ProductDto>(Mapper);
         }
         catch (Exception ex)
         {

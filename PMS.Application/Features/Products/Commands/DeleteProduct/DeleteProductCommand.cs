@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using PMS.Domain.Common;
-using PMS.Domain.Interfaces.Repositories;
 using AutoMapper;
 using MediatR;
 using PMS.Application.Common;
 using PMS.Application.Dtos.Proudct;
+using PMS.Application.Interfaces.Repositories;
 using PMS.Domain.Entities;
 
 namespace PMS.Application.Features.Products.Commands.DeleteProduct;

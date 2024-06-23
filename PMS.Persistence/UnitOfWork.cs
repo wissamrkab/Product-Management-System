@@ -1,6 +1,6 @@
 ﻿using System.Collections;
+using PMS.Application.Interfaces.Repositories;
 using PMS.Domain.Common.Interfaces;
-using PMS.Domain.Interfaces.Repositories;
 using PMS.Persistence.Contexts;
 using PMS.Persistence.Repositories;
 

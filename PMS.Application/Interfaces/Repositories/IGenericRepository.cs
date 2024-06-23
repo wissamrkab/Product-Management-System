@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace PMS.Domain.Interfaces.Repositories;
+namespace PMS.Application.Interfaces.Repositories;
 
 public interface IGenericRepository<T>
 {

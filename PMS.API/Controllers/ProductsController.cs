@@ -6,6 +6,8 @@ using PMS.Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Dtos.Proudct;
+using PMS.Application.Features.Products.Commands.UpdateProduct;
+using PMS.Domain.Entities;
 
 namespace PMS.API.Controllers;
 
@@ -33,13 +35,14 @@ public class ProductsController(IMediator mediator) : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Result<ProductDto>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Result<>))]
-    public async Task<IActionResult> GetAllProducts(int page = 1, int pageSize = 10, string searchCriteria = "")
+    public async Task<IActionResult> GetAllProducts(int page = 1, int pageSize = 10, string searchCriteria = "",[FromQuery] List<Guid>? categoryIds = null)
     {
         var getAllProductsQuery = new GetAllProductsQuery
         {
             Page = page,
             PageSize = pageSize,
-            SearchCriteria = searchCriteria
+            SearchCriteria = searchCriteria,
+            CategoryIds = categoryIds
         };
         getAllProductsQuery.SetEmail(User.Identity?.Name);
         var result = await mediator.Send(getAllProductsQuery);
@@ -52,7 +55,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Result<ProductDto>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Result<>))]
-    public async Task<IActionResult> CreateProduct([FromForm] CreateProductCommand createProductCommand)
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand createProductCommand)
     {
         createProductCommand.SetEmail(User.Identity?.Name);
         var result = await mediator.Send(createProductCommand);
@@ -61,18 +64,18 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return Created($"/api/products/{result.Data!.Id}",result);
     }
     
-    // [HttpPut]
-    // [Produces("application/json")]
-    // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Product>))]
-    // [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Result<>))]
-    // public async Task<IActionResult> UpdateProduct([FromForm] UpdateProductCommand updateProductCommand)
-    // {
-    //     updateProductCommand.SetEmail(User.Identity?.Name);
-    //     var result = await mediator.Send(updateProductCommand);
-    //         
-    //     if(!result.IsSuccess) return BadRequest(result);
-    //     return Ok(result);
-    // }
+    [HttpPut]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Product>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Result<>))]
+    public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductCommand updateProductCommand)
+    {
+        updateProductCommand.SetEmail(User.Identity?.Name);
+        var result = await mediator.Send(updateProductCommand);
+            
+        if(!result.IsSuccess) return BadRequest(result);
+        return Ok(result);
+    }
     
     [HttpDelete("{id:guid}")]
     [Produces("application/json")]

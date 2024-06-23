@@ -1,6 +1,6 @@
-﻿using PMS.Domain.Interfaces.Repositories;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
+using PMS.Application.Interfaces.Repositories;
 
 namespace PMS.Application.Features;
 

@@ -1,11 +1,10 @@
-﻿using PMS.Domain.Entities;
-using PMS.Domain.Interfaces.Repositories;
-using PMS.Persistence.Contexts;
+﻿using PMS.Persistence.Contexts;
 using PMS.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PMS.Application.Interfaces.Repositories;
 
 namespace PMS.Persistence;
 
@@ -19,14 +18,13 @@ public static class ServiceCollectionExtensions
 
     private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        // var connectionString = configuration.GetConnectionString("DefaultConnection");
-        var connectionString = Environment.GetEnvironmentVariable("AWSConnection") ?? configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
         
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+            options.UseSqlServer(connectionString)
         );
 
-        services.AddIdentityCore<AppUser>()
+        services.AddIdentityCore<IdentityUser>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
     }
@@ -36,6 +34,7 @@ public static class ServiceCollectionExtensions
         services
             .AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork))
             .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>))
-            .AddTransient<IProductRepository, ProductRepository>();
+            .AddTransient<IProductRepository, ProductRepository>()
+            .AddTransient<ICategoryRepository, CategoryRepository>();
     }
 }

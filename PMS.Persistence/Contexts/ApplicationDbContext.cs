@@ -15,7 +15,14 @@ public class ApplicationDbContext : IdentityDbContext
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
     }
-    
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        
+        builder.ApplyConfiguration(new Product.ProductConfiguration());
+    }
+
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

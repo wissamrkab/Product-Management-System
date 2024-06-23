@@ -1,14 +1,18 @@
 ﻿using System.Reflection;
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MediatR;
 using PMS.Domain.Common;
 using PMS.Domain.Common.Interfaces;
-using PMS.Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PMS.Application.Common.Mapping;
+using PMS.Application.Features.Products.Commands.CreateProduct;
 using PMS.Application.Helpers;
+using PMS.Application.Interfaces;
 
 namespace PMS.Application;
 
@@ -18,6 +22,9 @@ public static class ServiceCollectionExtensions
     {
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly()]);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        
         services.AddHttpContextAccessor();
 
         services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();

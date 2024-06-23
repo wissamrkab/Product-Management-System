@@ -1,4 +1,4 @@
-﻿using PMS.Application.Dtos.UserDtos;
+﻿using PMS.Application.Dtos.User;
 
 namespace PMS.Application.Dtos.Audit;
 

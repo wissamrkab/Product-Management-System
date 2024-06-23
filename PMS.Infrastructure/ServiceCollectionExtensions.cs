@@ -1,7 +1,7 @@
-using PMS.Domain.Interfaces;
 using PMS.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PMS.Application.Interfaces;
 
 namespace PMS.Infrastructure;
 

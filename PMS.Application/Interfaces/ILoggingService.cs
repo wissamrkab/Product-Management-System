@@ -1,4 +1,4 @@
-﻿namespace PMS.Domain.Interfaces;
+﻿namespace PMS.Application.Interfaces;
 
 public interface ILoggingService
 {

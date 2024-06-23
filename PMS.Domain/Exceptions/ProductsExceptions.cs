@@ -22,4 +22,7 @@ public static class ProductsExceptions
         "Product.IsbnLengthMustBe13",
         "Isbn Length Must Be 13.");
     
+    public static readonly ExceptionCode IsbnMustBeUnique = new ExceptionCode(
+        "Product.IsbnMustBeUnique",
+        "There is a product with the same ISBN.");
 }

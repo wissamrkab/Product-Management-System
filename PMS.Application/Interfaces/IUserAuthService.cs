@@ -1,7 +1,7 @@
-﻿using PMS.Domain.ValueObjects;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using PMS.Domain.ValueObjects;
 
-namespace PMS.Domain.Interfaces;
+namespace PMS.Application.Interfaces;
 
 public interface IUserAuthService
 {

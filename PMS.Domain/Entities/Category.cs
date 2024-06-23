@@ -26,7 +26,7 @@ public class Category : AuditableEntity
     {
     }
 
-    private Category(string nameEn, string nameAr,Guid? parentId, IdentityUser createdBy)
+    private Category(string nameEn, string nameAr,Guid? parentId, IdentityUser? createdBy)
     {
         NameEn = nameEn;
         NameAr = nameAr;
@@ -35,14 +35,26 @@ public class Category : AuditableEntity
         CreatedDate = DateTime.UtcNow;
     }
     
-    public static Result<Category> Create(string nameEn, string nameAr,Guid? parentId, IdentityUser createdBy)
+    public static Result<Category> Create(string nameEn, string nameAr,Guid? parentId, IdentityUser? createdBy)
     {
-        var validationResult = Validate(nameEn, nameAr);
-        if (validationResult != null) return validationResult;
+        var validationResult = ValidateDomainRules(nameEn, nameAr);
+        if (!validationResult.IsSuccess) return validationResult;
 
         var category = new Category(nameEn, nameAr, parentId, createdBy);
 
         return category;
+    }
+    
+    public Result<Category> Update(string nameEn, string nameAr,Guid? parentId, IdentityUser? updatedBy)
+    {
+        var validationResult = ValidateDomainRules(nameEn, nameAr);
+        if (!validationResult.IsSuccess) return validationResult;
+
+        NameEn = nameEn;
+        NameAr = nameAr;
+        ParentId = parentId;
+
+        return this;
     }
 
     public void SetSubCategories(ICollection<Category>? categories)
@@ -50,12 +62,10 @@ public class Category : AuditableEntity
         _subCategories = categories!.ToList();
     }
     
-    private static Result<Category>? Validate(string nameEn, string nameAr)
+    private static Result<Category> ValidateDomainRules(string nameEn, string nameAr)
     {
         List<ExceptionCode> exceptionCodes = [];
-        if (nameEn.Length is not(> 0 and < 255)
-            || nameAr.Length is not(> 0 and < 255)) exceptionCodes.Add(CategoriesExceptions.NameMustBeBetween0And255);
-
-        return (exceptionCodes.Count > 0 ? exceptionCodes : null)!;
+      
+        return exceptionCodes.Count > 0 ? exceptionCodes : Result<Category>.Success(null!);
     }
 }

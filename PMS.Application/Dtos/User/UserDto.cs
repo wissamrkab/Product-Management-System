@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PMS.Application.Common.Mapping;
 
-namespace PMS.Application.Dtos.UserDtos;
+namespace PMS.Application.Dtos.User;
 
 public class UserDto : IMapFrom<IdentityUser>
 {

@@ -1,4 +1,4 @@
-﻿namespace PMS.Domain.Interfaces.Repositories;
+﻿namespace PMS.Application.Interfaces;
 
 public interface IChatService
 {

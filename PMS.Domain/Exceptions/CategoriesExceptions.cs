@@ -21,4 +21,10 @@ public static class CategoriesExceptions
         
         return error;
     }
+    
+    public static readonly ExceptionCode AtLeastOneCategoryIsRequired = new()
+    {
+        Code = "Category.AtLeastOneCategoryIsRequired",
+        Description = "At Least One Category Is Required."
+    };
 }
