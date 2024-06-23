@@ -1,0 +1,19 @@
+﻿version: 0.2
+phases:
+  install:
+    runtime-versions:
+      dotnet: 8.0
+  pre_build:
+    commands:
+      - echo Build started on `date`
+      - dotnet restore ./PMS.API/PMS.API.csproj
+  build:
+    commands:
+      - dotnet build ./PMS.API/PMS.API.csproj
+  post_build:
+    commands:
+      - dotnet publish -c Release -o ./app ./PMS.API/PMS.API.csproj
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'

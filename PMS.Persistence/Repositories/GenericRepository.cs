@@ -55,13 +55,26 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
         if (wheres != null) query = query.Where(wheres);
 
-        // Calculate skip count based on page number and page size
-        var skipCount = (page - 1) * pageSize;
+        if (page != -1)
+        {
+            // Calculate skip count based on page number and page size
+            var skipCount = (page - 1) * pageSize;
 
-        // Apply pagination
-        query = query.Skip(skipCount).Take(pageSize);
-
+            // Apply pagination
+            query = query.Skip(skipCount).Take(pageSize);
+        }
+        
         return await query.ToListAsync();
+    }
+    
+    public async Task<int> GetCountAsync(Expression<Func<T, bool>>? wheres = null)
+    {
+        var query = _dbContext.Set<T>().AsQueryable();
+        
+        if (wheres != null) query = query.Where(wheres);
+        
+        
+        return await query.CountAsync();
     }
     
     public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> wheres ,

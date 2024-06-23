@@ -40,7 +40,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet("WithProductCount")]
+    [HttpGet("withProductsCount")]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Result<List<CategoryDto>>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Result<>))]

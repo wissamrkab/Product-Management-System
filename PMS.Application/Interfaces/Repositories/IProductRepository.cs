@@ -8,5 +8,8 @@ public interface IProductRepository
 
     Task<IEnumerable<Product>> GetFullProductList(int page = 1, int pageSize = 10,
         string searchCriteria = "", List<Guid>? categoryIds = null);
+    
+    Task<int> GetProductCountAsync(
+        string searchCriteria = "", List<Guid>? categoryIds = null);
 
 }

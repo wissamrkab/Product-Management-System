@@ -8,7 +8,7 @@ public interface IGenericRepository<T>
     Task<T?> GetByIdAsync(Guid id, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
     
     Task<IEnumerable<T>?> GetAllByDIdsAsync(List<Guid> guids, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
-    
+    public Task<int> GetCountAsync(Expression<Func<T, bool>>? wheres = null);
     Task<IEnumerable<T>> GetAllAsync(int page, int pageSize, Expression<Func<T, bool>>? wheres = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
     

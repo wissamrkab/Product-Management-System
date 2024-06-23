@@ -27,4 +27,11 @@ public class ProductRepository(IGenericRepository<Product> repository) : IProduc
             )
         );
     }
+
+    public async Task<int> GetProductCountAsync(string searchCriteria = "", List<Guid>? categoryIds = null)
+    {
+        return await repository.GetCountAsync(product =>
+            (product.Name.Contains(searchCriteria) || product.Isbn.Contains(searchCriteria))
+            && (categoryIds == null || product.Categories.Any(cat => categoryIds.Contains(cat.Id))));
+    }
 }
